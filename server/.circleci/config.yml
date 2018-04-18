@@ -1,0 +1,51 @@
+version: 2
+jobs:
+   build:
+     docker:
+       - image: gcr.io/fetch-191712/circleci/base:latest
+         auth:
+           username: _json_key  # default username when using a JSON key file to authenticate
+           password: $GCLOUD_SERVICE_KEY  # encoded service account you created         
+     working_directory: ~/source
+     steps:       
+       - checkout
+       - setup_remote_docker:   # (2)
+          docker_layer_caching: true # (3)
+       - run: echo "hello world"
+       - run: ls -la ~/
+       - run: echo "Setting up Google cloud"
+       - run:
+          name: Store Service Account
+          command: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+       - run:
+          name: configure gcloud
+          command: |
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud config set project fetch-191712 
+            gcloud config set compute/zone europe-west3-b
+            gcloud container clusters get-credentials fetch-dev
+            set +e
+            echo  "Getting the latest base image"
+            gcloud docker -- pull gcr.io/fetch-191712/fetch_base/base
+            set -e
+      #  - run:
+      #      name: Build new service image
+      #      command: |
+      #        sed -i 's/\r$//' ~/build_and_push_service_image.sh
+      #        bash ~/build_and_push_service_image.sh 
+      #  - run:
+      #      name: Build new frontend image
+      #      command: |
+      #        sed -i 's/\r$//' ~/build_and_push_frontend_image.sh
+      #        bash ~/build_and_push_frontend_image.sh
+       - run:
+           name: Deploy to google cloud
+           command: |
+             gcloud config list
+             kubectl get nodes
+       #  - run: gcloud auth activate-service-account --key-file $HOME/Fetch-c13bd111efb2.json
+      #  - run: gcloud config set project fetch-191712
+      #  - run: gcloud config set compute/zone europe-west3-b
+      #  - run: gcloud container clusters get-credentials fetch-dev
+      #  - run: export TEST="test ev"
+      #  - run: echo $TEST
