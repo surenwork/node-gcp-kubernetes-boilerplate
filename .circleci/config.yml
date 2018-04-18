@@ -16,3 +16,8 @@ jobs:
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
             sed -i 's/\r$//' ~/setup_gcloud.sh
             bash ~/setup_gcloud.sh
+       - run:
+          name: Test kubectl commands
+          command: |
+            kubectl get nodes
+            kubectl config current-context
