@@ -2,12 +2,12 @@ version: 2
 jobs:
    build:
      docker:
-       - image: gcr.io/fetch-191712/circleci/base:latest
-         auth:
-           username: _json_key  # default username when using a JSON key file to authenticate
-           password: $GCLOUD_SERVICE_KEY  # encoded service account you created         
+       - image: surenwork/ngk-boilerplate:latest
+         # auth:
+         #   username: _json_key  # default username when using a JSON key file to authenticate
+         #   password: $GCLOUD_SERVICE_KEY  # encoded service account you created
      working_directory: ~/source
-     steps:       
+     steps:
        - checkout
        - setup_remote_docker:   # (2)
           docker_layer_caching: true # (3)
@@ -21,7 +21,7 @@ jobs:
           name: configure gcloud
           command: |
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-            gcloud config set project fetch-191712 
+            gcloud config set project fetch-191712
             gcloud config set compute/zone europe-west3-b
             gcloud container clusters get-credentials fetch-dev
             set +e
@@ -32,7 +32,7 @@ jobs:
       #      name: Build new service image
       #      command: |
       #        sed -i 's/\r$//' ~/build_and_push_service_image.sh
-      #        bash ~/build_and_push_service_image.sh 
+      #        bash ~/build_and_push_service_image.sh
       #  - run:
       #      name: Build new frontend image
       #      command: |

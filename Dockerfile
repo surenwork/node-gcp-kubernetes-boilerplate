@@ -41,14 +41,14 @@ RUN addgroup -g 1000 node \
     && ./configure \
     && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
+    && apk del .build-deps \
     && cd .. \
     && rm -Rf "node-v$NODE_VERSION" \
     && rm "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
 
-RUN apk --update add git openssh curl bash && \
+RUN apk --update add git openssh curl && \
     rm -rf /var/lib/apt/lists/* && \
-    rm /var/cache/apk/* && \
-    apk del .build-deps
+    rm /var/cache/apk/*
 
 USER node
 WORKDIR /home/node
