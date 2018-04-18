@@ -10,4 +10,9 @@ jobs:
           docker_layer_caching: true # (3)
        - run: echo "hello world"
        - run: ls -la ~/source
-       - run: echo "Setting up Google cloud"
+       - run:
+          name: Setting Up Google Cloud Environment
+          command: |
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+            sed -i 's/\r$//' ~/setup_gcloud.sh
+            bash ~/setup_gcloud.sh
