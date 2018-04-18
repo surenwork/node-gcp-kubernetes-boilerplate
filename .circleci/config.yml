@@ -4,10 +4,10 @@ jobs:
      docker:
        - image: surenwork/ngk-boilerplate:latest
      working_directory: ~/source
-    steps:
-      - checkout
-      - setup_remote_docker:   # (2)
-         docker_layer_caching: true # (3)
-      - run: echo "hello world"
-      - run: ls -la ~/
-      - run: echo "Setting up Google cloud"
+     steps:
+       - checkout
+       - setup_remote_docker:   # (2)
+          docker_layer_caching: true # (3)
+       - run: echo "hello world"
+       - run: ls -la ~/
+       - run: echo "Setting up Google cloud"
