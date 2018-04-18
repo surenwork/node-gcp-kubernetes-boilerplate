@@ -2,7 +2,7 @@ version: 2
 jobs:
    build:
      docker:
-       - image: surenwork/ngk-boilerplate:latest
+       - image: surenwork/ngk-boilerplate:0.1.6
      working_directory: ~/source
      steps:
        - checkout
