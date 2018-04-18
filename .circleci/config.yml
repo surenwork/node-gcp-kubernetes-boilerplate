@@ -19,5 +19,7 @@ jobs:
        - run:
           name: Test kubectl commands
           command: |
+            gcloud container clusters get-credentials $GCLOUD_KUBE_CLUSTER
+            gcloud container clusters update $GCLOUD_KUBE_CLUSTER --no-enable-legacy-authorization 
             kubectl get nodes
             kubectl config current-context
