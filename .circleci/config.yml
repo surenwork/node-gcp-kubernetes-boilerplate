@@ -22,7 +22,7 @@ jobs:
            name: Build the Application
            command: npm run build
        - persist_to_workspace:
-           root: source
+           root: ~/source
            paths:
              - dist
              - .dockerignore
