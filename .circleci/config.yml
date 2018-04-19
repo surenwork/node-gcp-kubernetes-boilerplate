@@ -35,10 +35,9 @@ jobs:
             sed -i 's/\r$//' ~/setup_gcloud.sh
             bash ~/setup_gcloud.sh
        - run:
-          name: Test kubectl commands
+          name: Check if Dist folder has deployed files
           command: |
-            kubectl get nodes
-            kubectl config current-context
+            ls -la ~/source/dist
 workflows:
   version: 2
   build_and_test:
