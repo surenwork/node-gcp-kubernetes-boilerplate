@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/
   docker:
-    - image: surenwork/ngk-boilerplate:0.1.7
+    - image: surenwork/ngk-boilerplate:0.1.8
 version: 2
 jobs:
    build:
@@ -42,11 +42,22 @@ jobs:
        - run: echo "hello world"
        - run: ls -la ~/source
        - run:
+          name: Setting Up the enviornment variables
+          command: |
+            sed -i 's/\r$//' ~/1-update_buildenv.sh
+            bash ~/1-update_buildenv.sh
+       - run:
           name: Setting Up Google Cloud Environment
           command: |
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-            sed -i 's/\r$//' ~/setup_gcloud.sh
-            bash ~/setup_gcloud.sh
+            sed -i 's/\r$//' ~/2-setup_gcloud.sh
+            bash ~/2-setup_gcloud.sh
+      # Script to build and push the service container to gcp container registery goes here
+       - run:
+          name: Setup Endpoint for the API and Add the API URL to DNS
+          command: |
+            sed -i 's/\r$//' ~/3-deploy_endpoint.sh
+            bash ~/3-deploy_endpoint.sh
        - run:
           name: Check if Dist folder has deployed files
           command: |

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --require babel-core/register",
     "dev": "nodemon index.js --exec babel-node",
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log,./*.txt,./Dockerfile,./.gitignore,./.dockerignore --copy-files",
+    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,.env,./.babelrc,./package.json,./npm-debug.log,./*.txt,./Dockerfile,./.gitignore,./.dockerignore,./openapi.yaml --copy-files",
     "start": "[ \"$NODE_ENV\" = production ] && node index.js"
   },
   "author": "",
