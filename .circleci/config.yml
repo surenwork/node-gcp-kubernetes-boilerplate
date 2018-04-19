@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/
   docker:
-    - image: surenwork/ngk-boilerplate:0.1.8
+    - image: surenwork/ngk-boilerplate:0.1.10
 version: 2
 jobs:
    build:
@@ -52,12 +52,16 @@ jobs:
             echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
             sed -i 's/\r$//' ~/2-setup_gcloud.sh
             bash ~/2-setup_gcloud.sh
-      # Script to build and push the service container to gcp container registery goes here
+       - run:
+          name: Build and push service container to GCP container
+          command: |
+            sed -i 's/\r$//' ~/3-build_push_service_container.sh
+            bash ~/3-build_push_service_container.sh
        - run:
           name: Setup Endpoint for the API and Add the API URL to DNS
           command: |
-            sed -i 's/\r$//' ~/3-deploy_endpoint.sh
-            bash ~/3-deploy_endpoint.sh
+            sed -i 's/\r$//' ~/4-deploy_endpoint.sh
+            bash ~/4-deploy_endpoint.sh
        - run:
           name: Check if Dist folder has deployed files
           command: |
