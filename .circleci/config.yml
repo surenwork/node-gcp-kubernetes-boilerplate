@@ -1,8 +1,11 @@
+defaults: &defaults
+  working_directory: ~/
+  docker:
+    - image: surenwork/ngk-boilerplate:0.1.7
 version: 2
 jobs:
    build:
-     docker:
-       - image: surenwork/ngk-boilerplate:0.1.7
+     <<: *defaults
      working_directory: ~/source
      steps:
        - checkout
@@ -18,14 +21,24 @@ jobs:
        - run:
            name: Build the Application
            command: npm run build
+       - persist_to_workspace:
+           root: source
+           paths:
+             - dist
+             - .dockerignore
+             - .env
+             - .gitignore
+             - Dockerfile
+             - openapi.yaml
+             - package.json
    deploy:
-     docker:
-       - image: surenwork/ngk-boilerplate:0.1.7
-     working_directory: ~/source
+     <<: *defaults
      steps:
-       - checkout
        - setup_remote_docker:   # (2)
           docker_layer_caching: true # (3)
+       - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/source
        - run: echo "hello world"
        - run: ls -la ~/source
        - run:
