@@ -6,12 +6,13 @@
   "scripts": {
     "test": "mocha --require babel-core/register",
     "dev": "nodemon index.js --exec babel-node",
-    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log,./*.txt,./Dockerfile,./.gitignore,./.dockerignore --copy-files && docker build --tag=test-deploy .",
+    "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log,./*.txt,./Dockerfile,./.gitignore,./.dockerignore --copy-files",
     "start": "[ \"$NODE_ENV\" = production ] && node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "morgan": "^1.9.0"
   },

@@ -6,6 +6,24 @@ jobs:
      working_directory: ~/source
      steps:
        - checkout
+       - restore_cache:
+           key: dependency-cache-{{ checksum "package.json" }}
+       - run:
+           name: Install npm wee
+           command: npm install
+       - save_cache:
+           key: dependency-cache-{{ checksum "package.json" }}
+           paths:
+             - node_modules
+       - run:
+           name: Build the Application
+           command: npm run build
+   deploy:
+     docker:
+       - image: surenwork/ngk-boilerplate:0.1.7
+     working_directory: ~/source
+     steps:
+       - checkout
        - setup_remote_docker:   # (2)
           docker_layer_caching: true # (3)
        - run: echo "hello world"
@@ -19,7 +37,16 @@ jobs:
        - run:
           name: Test kubectl commands
           command: |
-            gcloud container clusters get-credentials $GCLOUD_KUBE_CLUSTER
-            gcloud container clusters update $GCLOUD_KUBE_CLUSTER --no-enable-legacy-authorization 
             kubectl get nodes
             kubectl config current-context
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
