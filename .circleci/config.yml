@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/
   docker:
-    - image: surenwork/ngk-boilerplate:0.1.11
+    - image: surenwork/ngk-boilerplate:0.1.12
 version: 2
 jobs:
    build:
