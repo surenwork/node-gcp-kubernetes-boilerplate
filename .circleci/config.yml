@@ -1,7 +1,7 @@
 defaults: &defaults
   working_directory: ~/
   docker:
-    - image: surenwork/ngk-boilerplate:0.1.10
+    - image: surenwork/ngk-boilerplate:0.1.11
 version: 2
 jobs:
    build:
@@ -62,6 +62,11 @@ jobs:
           command: |
             sed -i 's/\r$//' ~/4-deploy_endpoint.sh
             bash ~/4-deploy_endpoint.sh
+       - run:
+          name: Obtain SSL/TLS Certification for the hostname
+          command: |
+            sed -i 's/\r$//' ~/5-get_ssl_certificate.sh
+            bash ~/5-get_ssl_certificate.sh
        - run:
           name: Check if Dist folder has deployed files
           command: |
